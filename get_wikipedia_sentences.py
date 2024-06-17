@@ -16,20 +16,20 @@ if __name__ != '__main__':
 
 #############################
 
-num_of_sents_to_save = 20000
+num_of_sents_to_save = 60
 save_file_name = file('experiment', 'sentences',
-                      'wikipedia_20K-sentences', 'pickle')
+                      'sentences', 'pickle')
 
 #############################
 
-wikipedia = load_dataset('wikipedia', '20220301.en')['train']
+xsum = load_dataset('EdinburghNLP/xsum')['train']
 nlp = spacy.load('en_core_web_sm')
 
-num_of_docs = len(wikipedia)
+num_of_docs = len(xsum)
 
 
 def get_sents(doc_id):
-    spacyfied_doc = nlp(wikipedia[doc_id]['text'])
+    spacyfied_doc = nlp(xsum[doc_id]['document'])
     return [sent for sent in spacyfied_doc.sents]
 
 #############################

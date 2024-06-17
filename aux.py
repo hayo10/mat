@@ -8,6 +8,8 @@ import transformers
 import random
 import os
 from sklearn.linear_model import LinearRegression as LinReg
+from transformers import  AutoTokenizer, MambaForCausalLM
+
 
 import utils.pickle as pck
 
@@ -49,33 +51,35 @@ def rng(start, end, steps, no_start=False, no_end=False):
 
 # get model from transformers by name
 def get_model(model_name):
-    if 'gpt2' in model_name:
-        model =\
-            transformers.GPT2Model.from_pretrained(model_name,
-                                                   output_hidden_states=True)
-        model.eval()
-        return model
-    elif 'bert' in model_name:
-        model =\
-            transformers.BertModel.from_pretrained(model_name,
-                                                   output_hidden_states=True)
-        model.eval()
-        return model
-    else:
-        raise RuntimeError('model not supported...')
+    model = MambaForCausalLM.from_pretrained("state-spaces/mamba-130m-hf")
+    # if 'gpt2' in model_name:
+    #     model =\
+    #         transformers.GPT2Model.from_pretrained(model_name,
+    #                                                output_hidden_states=True)
+    #     model.eval()
+    #     return model
+    # elif 'bert' in model_name:
+    #     model =\
+    #         transformers.BertModel.from_pretrained(model_name,
+    #                                                output_hidden_states=True)
+    model.eval()
+    return model
+    
 
 
 # get tokenizer from transformers by name
 def get_tokenizer(model_name):
-    if 'gpt2' in model_name:
-        tokenizer = transformers.GPT2Tokenizer.from_pretrained(model_name)
-        tokenizer.add_special_tokens({'pad_token': '.'})
-        return tokenizer
-    elif 'bert' in model_name:
-        tokenizer = transformers.BertTokenizer.from_pretrained(model_name)
-        return tokenizer
-    else:
-        raise RuntimeError('model not supported...')
+    tokenizer = AutoTokenizer.from_pretrained("state-spaces/mamba-130m-hf")
+    # if 'gpt2' in model_name:
+    #     tokenizer = transformers.GPT2Tokenizer.from_pretrained(model_name)
+    #     tokenizer.add_special_tokens({'pad_token': '.'})
+    #     return tokenizer
+    # elif 'bert' in model_name:
+    #     tokenizer = transformers.BertTokenizer.from_pretrained(model_name)
+    #     return tokenizer
+    # else:
+    #     raise RuntimeError('model not supported...')
+    return tokenizer
 
 
 def mul(A, v):
@@ -147,7 +151,16 @@ def linreg(x, y, intercept=False,
     x = x.detach().cpu()
     y = y.detach().cpu()
 
-    reg = LinReg(fit_intercept=intercept).fit(x, y)
+    if len(x.shape) == 3:
+        n_samples, n_timesteps, n_features = x.shape
+        x_reshaped = x.reshape(n_samples * n_timesteps, n_features)
+
+        y_reshaped = y.reshape(n_samples * n_timesteps, n_features)
+
+        reg = LinReg(fit_intercept=intercept).fit(x_reshaped, y_reshaped)
+    else:
+        reg = LinReg(fit_intercept=intercept).fit(x, y)
+        
     if intercept:
         reg = [torch.from_numpy(reg.coef_),
                torch.from_numpy(reg.intercept_)]

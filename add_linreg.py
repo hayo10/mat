@@ -2,13 +2,12 @@
 Compute and save the linearly-regressed matrices approximating
 a layer's representation given another layer's representation
 '''
-
 import utils.pickle as pck
 import utils.torch as trc
 
 from aux import concat_iter, linreg, file, verbose
 
-from deconstructed_GPT2 import DeconstructedGPT2, Rep
+from deconstructed_Mamba import DeconstructedMamba, Rep
 
 #############################
 
@@ -17,24 +16,24 @@ if __name__ != '__main__':
 
 #############################
 
-model_name = 'gpt2'
-dataset = 'wikipedia'
-batch_size = 4
+model_name = 'mamba'
+dataset = 'xsum'
+batch_size = 10
 final_device = 'cpu'
 only_to_final = False
 
 #############################
 
-tokenized = pck.load(file('experiment', model_name,
-                          dataset + '_tokenized_train', 'pickle'))
+tokenized = pck.load(file('experiment', dataset,
+                          model_name + '_tokenized_train', 'pickle'))
 tokenized_sentences = tokenized['tokenized_sentences']
 token_positions = tokenized['token_positions']
 
 device = trc.get_cuda_if_possible()
 if final_device == 'gpu':
     final_device = device
-model = DeconstructedGPT2(model_name, dataset)
-model._no_ln_f = True
+model = DeconstructedMamba(model_name, dataset)
+model._no_norm_f = True
 model.to(device)
 
 num_of_layers = model.num_of_layers()

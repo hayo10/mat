@@ -2,7 +2,6 @@
 Compute and save tokenizations of sentences,
 and a random token position in each sentence
 '''
-
 import torch
 import random
 
@@ -17,12 +16,12 @@ if __name__ != '__main__':
 
 #############################
 
-sents_file_name = 'experiment/sentences/wikipedia_20K-sentences.pickle'
-train_sents = [0, 9000]
-val_sents = [9000, 12000]
+sents_file_name = 'experiment/sentences/sentences.pickle'
+train_sents = [0, 50]
+val_sents = [50, 60]
 max_token_seq_length = 1024
-model_name = 'gpt2'
-dataset = 'wikipedia'
+model_name = 'xsum'
+dataset = 'mamba'
 
 #############################
 

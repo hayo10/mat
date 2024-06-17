@@ -1,0 +1,54 @@
+finished loading
+working on layer 0 out of 24
+working on layer 1 out of 24
+working on layer 2 out of 24
+working on layer 3 out of 24
+working on layer 4 out of 24
+working on layer 5 out of 24
+working on layer 6 out of 24
+working on layer 7 out of 24
+working on layer 8 out of 24
+working on layer 9 out of 24
+working on layer 10 out of 24
+working on layer 11 out of 24
+working on layer 12 out of 24
+working on layer 13 out of 24
+working on layer 14 out of 24
+working on layer 15 out of 24
+working on layer 16 out of 24
+working on layer 17 out of 24
+working on layer 18 out of 24
+working on layer 19 out of 24
+working on layer 20 out of 24
+working on layer 21 out of 24
+working on layer 22 out of 24
+working on layer 23 out of 24
+working on layer 24 out of 24
+starting linear regression computation and save
+finished loading
+working on layer 0 out of 24
+working on layer 1 out of 24
+working on layer 2 out of 24
+working on layer 3 out of 24
+working on layer 4 out of 24
+working on layer 5 out of 24
+working on layer 6 out of 24
+working on layer 7 out of 24
+working on layer 8 out of 24
+working on layer 9 out of 24
+working on layer 10 out of 24
+working on layer 11 out of 24
+working on layer 12 out of 24
+working on layer 13 out of 24
+working on layer 14 out of 24
+working on layer 15 out of 24
+working on layer 16 out of 24
+working on layer 17 out of 24
+working on layer 18 out of 24
+working on layer 19 out of 24
+working on layer 20 out of 24
+working on layer 21 out of 24
+working on layer 22 out of 24
+working on layer 23 out of 24
+working on layer 24 out of 24
+starting r2 score computation and save

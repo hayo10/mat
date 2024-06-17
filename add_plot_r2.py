@@ -1,6 +1,9 @@
 '''
 Compute and save r^2 results, and plot a heatmap of them
 '''
+'''
+Compute and save r^2 results, and plot a heatmap of them
+'''
 
 import os
 from sklearn.metrics import r2_score
@@ -12,7 +15,7 @@ import utils.torch as trc
 
 from aux import mul, concat_iter, file, verbose
 
-from deconstructed_GPT2 import DeconstructedGPT2, Rep
+from deconstructed_Mamba import DeconstructedMamba, Rep
 
 #############################
 
@@ -21,9 +24,9 @@ if __name__ != '__main__':
 
 #############################
 
-model_name = 'gpt2'
-dataset = 'wikipedia'
-batch_size = 8
+model_name = 'mamba'
+dataset = 'xsum'
+batch_size = 10
 final_device = 'cpu'
 plot_both_together = True
 
@@ -36,16 +39,16 @@ save_file_name = file('experiment',
 def compute_r2_scores():
     global final_device
 
-    tokenized = pck.load(file('experiment', model_name,
-                              dataset + '_tokenized_val', 'pickle'))
+    tokenized = pck.load(file('experiment', dataset,
+                              model_name + '_tokenized_val', 'pickle'))
     tokenized_sentences = tokenized['tokenized_sentences']
     token_positions = tokenized['token_positions']
 
     device = trc.get_cuda_if_possible()
     if final_device == 'gpu':
         final_device = device
-    model = DeconstructedGPT2(model_name, dataset)
-    model._no_ln_f = True
+    model = DeconstructedMamba(model_name, dataset)
+    model._no_lm_head = True
     model.to(device)
 
     num_of_layers = model.num_of_layers()
@@ -89,19 +92,27 @@ def compute_r2_scores():
         for j in range(i+1, num_of_layers+1):
             x = vectors[i].v().detach().cpu()
             y = vectors[j].v().detach().cpu()
+            last_dim = y.shape[-1]
+            y_reshaped = y.reshape(-1, last_dim)
+
             file_name = file('linreg', model_name, dataset,
                              '_'.join([str(i), str(j)]), 'pickle')
             A = pck.load(file_name)
             yhat = mul(A, x)
-            score_mat[(i, j)] = r2_score(y, yhat)
+            yhat_reshaped = yhat.reshape(-1, last_dim)
+        
+            score_mat[(i, j)] = r2_score(y_reshaped, yhat_reshaped)
 
     score_id = {}
     for i in range(num_of_layers+1):
         for j in range(i+1, num_of_layers+1):
             x = vectors[i].v().detach().cpu()
             y = vectors[j].v().detach().cpu()
+            last_dim = y.shape[-1]
+            y_reshaped = y.reshape(-1, last_dim)
             yhat = x
-            score_id[(i, j)] = r2_score(y, yhat)
+            yhat_reshaped = yhat.reshape(-1, last_dim)
+            score_id[(i, j)] = r2_score(y_reshaped, yhat_reshaped)
 
     dct = {'score_mat': score_mat, 'score_id': score_id}
 

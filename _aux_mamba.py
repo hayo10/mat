@@ -15,6 +15,7 @@ import utils.pickle as pck
 #############################
 
 
+
 def verbose(x):
     print(x)
     with open('log.txt', 'a') as f:

@@ -5,7 +5,6 @@ and a random token position in each sentence
 
 import torch
 import random
-
 import utils.pickle as pck
 
 from _aux_mamba import concat, get_tokenizer, file

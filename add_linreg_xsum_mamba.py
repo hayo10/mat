@@ -16,6 +16,7 @@ from utils.mamba_util import (create_mamba_model, \
 
 #############################
 
+
 if __name__ != '__main__':
     raise RuntimeError('This script is not intended to be imported')
 

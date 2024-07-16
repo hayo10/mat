@@ -1,7 +1,6 @@
 '''
 Compute and save r^2 results, and plot a heatmap of them
 '''
-
 import os
 from sklearn.metrics import r2_score
 import seaborn as sns

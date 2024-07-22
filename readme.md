@@ -2,8 +2,6 @@
 
 This is the repository for deciding jumping path by compute algorithm.
 
-* hayoung lim
-
 # current impelmentation is in the jump_skeleton.py 
 
 

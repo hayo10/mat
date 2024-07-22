@@ -8,7 +8,7 @@ import transformers
 import random
 import os
 from sklearn.linear_model import LinearRegression as LinReg
-from transformers import  AutoTokenizer, MambaForCausalLM
+from transformers import  AutoTokenizer, AutoModelForCausalLM
 
 
 import utils.pickle as pck
@@ -51,7 +51,13 @@ def rng(start, end, steps, no_start=False, no_end=False):
 
 # get model from transformers by name
 def get_model(model_name):
-    model = MambaForCausalLM.from_pretrained("state-spaces/mamba-130m-hf")
+    model_id = "state-spaces/mamba-130m-hf"
+    peft_model_dir = "checkpoint-140"
+
+    model = AutoModelForCausalLM.from_pretrained(model_id)
+    model.load_adapter(peft_model_dir)
+   
+    # model = MambaForCausalLM.from_pretrained("state-spaces/mamba-130m-hf")
     # if 'gpt2' in model_name:
     #     model =\
     #         transformers.GPT2Model.from_pretrained(model_name,
@@ -69,7 +75,8 @@ def get_model(model_name):
 
 # get tokenizer from transformers by name
 def get_tokenizer(model_name):
-    tokenizer = AutoTokenizer.from_pretrained("state-spaces/mamba-130m-hf")
+    save_dir = 'checkpoint-140'
+    tokenizer = AutoTokenizer.from_pretrained(save_dir)
     # if 'gpt2' in model_name:
     #     tokenizer = transformers.GPT2Tokenizer.from_pretrained(model_name)
     #     tokenizer.add_special_tokens({'pad_token': '.'})

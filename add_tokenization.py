@@ -17,11 +17,11 @@ if __name__ != '__main__':
 #############################
 
 sents_file_name = 'experiment/sentences/sentences.pickle'
-train_sents = [0, 50]
-val_sents = [50, 60]
+train_sents = [0, 8000]
+val_sents = [8000, 10000]
 max_token_seq_length = 1024
-model_name = 'xsum'
-dataset = 'mamba'
+model_name = 'mamba'
+dataset = 'xsum'
 
 #############################
 
@@ -36,6 +36,7 @@ if sents_file_name.endswith('txt'):
     with open(sents_file_name, 'r') as f:
         lines = f.read().splitlines()
 elif sents_file_name.endswith('pickle'):
+
     lines = [sent for sent in pck.load_all(sents_file_name)]
 else:
     raise RuntimeError('sentences file name should be .txt or .pickle')

@@ -39,8 +39,8 @@ save_file_name = file('experiment',
 def compute_r2_scores():
     global final_device
 
-    tokenized = pck.load(file('experiment', dataset,
-                              model_name + '_tokenized_val', 'pickle'))
+    tokenized = pck.load(file('experiment', model_name,
+                              dataset + '_tokenized_val', 'pickle'))
     tokenized_sentences = tokenized['tokenized_sentences']
     token_positions = tokenized['token_positions']
 
